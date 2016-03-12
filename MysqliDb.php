@@ -252,13 +252,13 @@ class MysqliDb
         }
 
         if (empty($this->host)) {
-            throw new Exception('MySQL host is not set');
+            throw new \Exception('MySQL host is not set');
         }
 
-        $this->_mysqli = new mysqli($this->host, $this->username, $this->password, $this->db, $this->port);
+        $this->_mysqli = new \mysqli($this->host, $this->username, $this->password, $this->db, $this->port);
 
         if ($this->_mysqli->connect_error) {
-            throw new Exception('Connect Error ' . $this->_mysqli->connect_errno . ': ' . $this->_mysqli->connect_error);
+            throw new \Exception('Connect Error ' . $this->_mysqli->connect_errno . ': ' . $this->_mysqli->connect_error);
         }
 
         if ($this->charset) {
@@ -495,7 +495,7 @@ class MysqliDb
         foreach ($options as $option) {
             $option = strtoupper($option);
             if (!in_array($option, $allowedOptions)) {
-                throw new Exception('Wrong query option: ' . $option);
+                throw new \Exception('Wrong query option: ' . $option);
             }
 
             if ($option == 'MYSQLI_NESTJOIN') {
@@ -836,7 +836,7 @@ class MysqliDb
         $joinType = strtoupper(trim($joinType));
 
         if ($joinType && !in_array($joinType, $allowedTypes)) {
-            throw new Exception('Wrong JOIN type: ' . $joinType);
+            throw new \Exception('Wrong JOIN type: ' . $joinType);
         }
 
         if (!is_object($joinTable)) {
@@ -873,7 +873,7 @@ class MysqliDb
 
 
         if (empty($orderbyDirection) || !in_array($orderbyDirection, $allowedDirection)) {
-            throw new Exception('Wrong order direction: ' . $orderbyDirection);
+            throw new \Exception('Wrong order direction: ' . $orderbyDirection);
         }
 
         if (is_array($customFields)) {
@@ -1112,7 +1112,7 @@ class MysqliDb
      *
      * @return array The results of the SQL fetch.
      */
-    protected function _dynamicBindResults(mysqli_stmt $stmt)
+    protected function _dynamicBindResults(\mysqli_stmt $stmt)
     {
         $parameters = array();
         $results = array();
@@ -1159,10 +1159,10 @@ class MysqliDb
 
         while ($stmt->fetch()) {
             if ($this->returnType == 'object') {
-                $result = new stdClass ();
+                $result = new \stdClass ();
                 foreach ($row as $key => $val) {
                     if (is_array($val)) {
-                        $result->$key = new stdClass ();
+                        $result->$key = new \stdClass ();
                         foreach ($val as $k => $v) {
                             $result->$key->$k = $v;
                         }
@@ -1292,7 +1292,7 @@ class MysqliDb
                     }
                     break;
                 default:
-                    throw new Exception("Wrong operation");
+                    throw new \Exception("Wrong operation");
             }
         }
         $this->_query = rtrim($this->_query, ', ');
@@ -1481,7 +1481,7 @@ class MysqliDb
         if (!$stmt = $this->mysqli()->prepare($this->_query)) {
             $msg = "Problem preparing query ($this->_query) " . $this->mysqli()->error;
             $this->reset();
-            throw new Exception($msg);
+            throw new \Exception($msg);
         }
 
         if ($this->traceEnabled) {
@@ -1640,7 +1640,7 @@ class MysqliDb
             }
 
             if (!in_array($type, array_keys($types))) {
-                throw new Exception("invalid interval type in '{$diff}'");
+                throw new \Exception("invalid interval type in '{$diff}'");
             }
 
             $func .= " " . $incr . " interval " . $items . " " . $types[$type] . " ";
@@ -1675,7 +1675,7 @@ class MysqliDb
     public function inc($num = 1)
     {
         if (!is_numeric($num)) {
-            throw new Exception('Argument supplied to inc must be a number');
+            throw new \Exception('Argument supplied to inc must be a number');
         }
         return array("[I]" => "+" . $num);
     }
@@ -1690,7 +1690,7 @@ class MysqliDb
     public function dec($num = 1)
     {
         if (!is_numeric($num)) {
-            throw new Exception('Argument supplied to dec must be a number');
+            throw new \Exception('Argument supplied to dec must be a number');
         }
         return array("[I]" => "-" . $num);
     }
