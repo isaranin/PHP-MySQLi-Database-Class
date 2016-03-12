@@ -1,4 +1,5 @@
 <?php
+namespace MysqliDb;
 /**
  * Mysqli Model wrapper
  *
