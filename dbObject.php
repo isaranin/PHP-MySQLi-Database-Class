@@ -43,7 +43,7 @@ class dbObject {
      *
      * @var MysqliDb
      */
-    private $db;
+    protected $db;
     /**
      * Models path
      *
