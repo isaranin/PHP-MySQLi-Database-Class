@@ -251,7 +251,9 @@ class dbObject {
 
         if (empty ($this->data[$this->primaryKey]))
             return false;
-
+		
+		$oldKey = $this->data[$this->primaryKey];
+		
         if ($data) {
             foreach ($data as $k => $v)
                 $this->$k = $v;
@@ -264,7 +266,7 @@ class dbObject {
         if (!$this->validate ($sqlData))
             return false;
 
-        $this->db->where ($this->primaryKey, $this->data[$this->primaryKey]);
+        $this->db->where ($this->primaryKey, $oldKey);
         return $this->db->update ($this->dbTable, $sqlData);
     }
 
@@ -666,9 +668,14 @@ class dbObject {
                     $this->errors = array_merge ($this->errors, $value->errors);
             }
 
-            if (!in_array ($key, array_keys ($this->dbFields)))
-                continue;
-
+            if (!in_array ($key, array_keys ($this->dbFields))) {
+				if (is_array($this->primaryKey) && !in_array($key, $this->primaryKey)) {
+					continue;
+				}
+				if (is_string($this->primaryKey) && $key !== $this->primaryKey) {
+					continue;
+				}
+			}
             if (!is_array($value)) {
                 $sqlData[$key] = $value;
                 continue;
