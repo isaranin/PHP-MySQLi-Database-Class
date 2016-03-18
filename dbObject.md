@@ -192,9 +192,10 @@ NOTE: Objects returned with `join()` will not save changes to a joined propertie
 
 ###Timestamps
 Library provides a transparent way to set timestamps of an object creation and its modification:
-To enable that define `$timestamps` array as follows:
+To enable that define `$updateField` string or/and `$createField` with create/update field names:
 ```php
-protected $timestamps = Array ('createdAt', 'updatedAt');
+protected $updateField = 'updated';
+protected $createField = 'created';
 ```
 Field names can't be changed.
 

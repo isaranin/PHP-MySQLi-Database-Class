@@ -227,8 +227,9 @@ class dbObject {
      * @return mixed insert id or false in case of failure
      */
     public function insert () {
-        if (!empty ($this->timestamps) && in_array ("createdAt", $this->timestamps))
-            $this->createdAt = date("Y-m-d H:i:s");
+        if (!empty ($this->createField)) {
+			$this->{$this->createField} = date("Y-m-d H:i:s");
+		}
         $sqlData = $this->prepareData ();
         if (!$this->validate ($sqlData))
             return false;
@@ -256,8 +257,8 @@ class dbObject {
                 $this->$k = $v;
         }
 
-        if (!empty ($this->timestamps) && in_array ("updatedAt", $this->timestamps))
-            $this->updatedAt = date("Y-m-d H:i:s");
+        if (!empty ($this->updateField))
+			$this->{$this->updateField} = date("Y-m-d H:i:s");
 
         $sqlData = $this->prepareData ();
         if (!$this->validate ($sqlData))
